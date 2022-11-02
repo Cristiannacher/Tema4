@@ -8,6 +8,13 @@ fun main(args: Array<String>) {
     val password = "factura"
 
     val con = DriverManager.getConnection(url, usuari, password)
-    println("Connexió completada")
+
+    val st = con.createStatement()
+    val rs = st.executeQuery("SELECT * FROM poble")
+    while (rs.next()) {
+        print("" + rs.getInt(1) + "\t")
+        println(rs.getString(2))
+    }
+    st.close()
     con.close()
 }
