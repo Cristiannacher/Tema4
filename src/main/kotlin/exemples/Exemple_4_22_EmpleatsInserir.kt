@@ -6,7 +6,7 @@ fun main(args: Array<String>) {
     val url = "jdbc:sqlite:Empleats.sqlite"
     val con = DriverManager.getConnection(url)
     val st = con.createStatement()
-
+    println("INSERT INTO EMPLEAT VALUES (1,'Andreu',10,32,1000.0)")
     st.executeUpdate("INSERT INTO EMPLEAT VALUES (1,'Andreu',10,32,1000.0)")
 
     st.executeUpdate("INSERT INTO EMPLEAT VALUES (2,'Bernat',20,28,1200.0)")
