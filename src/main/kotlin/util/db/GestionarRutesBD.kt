@@ -48,12 +48,47 @@ class GestionarRutesBD {
         println(comanda)
         st.executeUpdate(comanda)
         for (punt in ruta.llistaDePunts) {
+            val st2= con.createStatement()
             val comanda2 =
                 "INSERT INTO PUNTS VALUES($maxRuta,$contador,'${punt.nom}',${punt.coord.latitud},${punt.coord.longitud})"
             println(comanda2)
-            st.executeUpdate(comanda2)
+            st2.executeUpdate(comanda2)
             contador++
         }
+    }
+
+    fun guardar(r: Ruta) {
+        val st = con.createStatement()
+        val sentenciaNomIgual = "SELECT nom_r FROM RUTES"
+        val nomRutes = st.executeQuery((sentenciaNomIgual))
+        var comprovador = false
+        while(nomRutes.next()){
+            if(nomRutes.getString(1).equals(r.nom))
+                comprovador = true
+        }
+
+        if (comprovador){
+            val st2 = con.createStatement()
+            val sentenciaUpdate = "UPDATE RUTES SET desn = ${r.desnivell}, desn_ac = ${r.desnivellAcumulat} WHERE nom_r = '${r.nom}'"
+            println(sentenciaUpdate)
+            st2.executeUpdate(sentenciaUpdate)
+            val borrarPunts = "DELETE FROM PUNTS WHERE num_r = (SELECT num_r FROM RUTES WHERE nom_r = '${r.nom}')"
+            println(borrarPunts)
+            st2.executeUpdate(borrarPunts)
+            val sentenciaNumRuta = "SELECT num_r FROM RUTES WHERE nom_r = '${r.nom}'"
+            val numRuta = st2.executeQuery(sentenciaNumRuta).getInt(1)
+            var contador = 1
+            for (punt in r.llistaDePunts) {
+                val comanda2 =
+                    "INSERT INTO PUNTS VALUES($numRuta,$contador,'${punt.nom}',${punt.coord.latitud},${punt.coord.longitud})"
+                println()
+                st2.executeUpdate(comanda2)
+                contador++
+            }
+        } else{
+            inserir(r)
+        }
+
     }
 
     fun buscar(num: Int): Ruta {
@@ -109,6 +144,7 @@ class GestionarRutesBD {
         st.executeQuery("DELETE FROM RUTES WHERE num_r = $i")
         st.executeQuery("DELETE FROM PUNTS WHERE nom_r = $i")
     }
+
 }
 
 

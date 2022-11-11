@@ -41,7 +41,7 @@ class Ruta(var nom: String, var desnivell: Int, var desnivellAcumulat: Int, var 
         println("Te ${llistaDePunts.size} punts")
 
         for (i in 0..llistaDePunts.size-1){
-            println("Punt 1: "+ getPuntNom(i)+"("+ getPuntLongitud(i) +", "+getPuntLatitud(i)+")")
+            println("Punt ${i+1}: "+ getPuntNom(i)+"("+ getPuntLongitud(i) +", "+getPuntLatitud(i)+")")
         }
         println()
         println()
